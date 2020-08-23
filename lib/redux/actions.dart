@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:flutter_store/models/app_state.dart';
 import 'package:flutter_store/models/product.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:flutter_store/Models/app_state.dart';
-import 'package:flutter_store/Models/user.dart';
+import 'package:flutter_store/models/app_state.dart';
+import 'package:flutter_store/models/user.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,4 +46,20 @@ class GetProductsAction {
   List<Product> get products => this._products;
 
   GetProductsAction(this._products);
+}
+
+ThunkAction<AppState> logoutUserAction = (Store<AppState> store) async {
+  final prefs = await SharedPreferences.getInstance();
+  User user;
+  await prefs.remove('user');
+
+  store.dispatch(LogoutUserAction(user));
+};
+
+class LogoutUserAction {
+  final dynamic _user;
+
+  dynamic get user => this._user;
+
+  LogoutUserAction(this._user);
 }

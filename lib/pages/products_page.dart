@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_store/Models/app_state.dart';
+import 'package:flutter_store/models/app_state.dart';
+import 'package:flutter_store/redux/actions.dart';
 import 'package:flutter_store/widgets/product_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,17 +49,32 @@ class ProductsPageState extends State<ProductsPage> {
           return AppBar(
             centerTitle: true,
             title: SizedBox(
-                child:
-                    state.user != null ? Text(state.user.username) : Text('')),
-            leading: Icon(Icons.store),
+                child: state.user != null
+                    ? Text(state.user.username)
+                    : FlatButton(
+                        child: Text(
+                          'Register',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/register'),
+                      )),
+            leading: state.user != null ? Icon(Icons.store) : Text(''),
             actions: [
               Padding(
-                  padding: EdgeInsets.only(right: 12.0),
-                  child: state.user != null
-                      ? IconButton(
-                          icon: Icon(Icons.exit_to_app),
-                          onPressed: () => print('pressed'))
-                      : Text(''))
+                padding: EdgeInsets.only(right: 12.0),
+                child: StoreConnector<AppState, VoidCallback>(
+                  converter: (store) {
+                    return () => store.dispatch(logoutUserAction);
+                  },
+                  builder: (_, callback) {
+                    return state.user != null
+                        ? IconButton(
+                            icon: Icon(Icons.exit_to_app), onPressed: callback)
+                        : Text('');
+                  },
+                ),
+              )
             ],
           );
         }),

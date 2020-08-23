@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_store/Models/app_state.dart';
+import 'package:flutter_store/models/app_state.dart';
 import 'package:flutter_store/pages/login_page.dart';
 import 'package:flutter_store/pages/products_page.dart';
 import 'package:flutter_store/pages/register_page.dart';
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/login': (BuildContext context) => LoginPage(),
           '/register': (BuildContext context) => RegisterPage(),
-          '/products': (BuildContext context) => ProductsPage(onInit: () {
+          '/': (BuildContext context) => ProductsPage(onInit: () {
                 StoreProvider.of<AppState>(context).dispatch(getUserAction);
                 StoreProvider.of<AppState>(context).dispatch(getProductsAction);
               })
@@ -55,7 +55,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: RegisterPage(),
       ),
     );
   }

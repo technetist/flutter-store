@@ -1,5 +1,5 @@
-import 'package:flutter_store/Models/app_state.dart';
-import 'package:flutter_store/Models/user.dart';
+import 'package:flutter_store/models/app_state.dart';
+import 'package:flutter_store/models/user.dart';
 import 'package:flutter_store/models/product.dart';
 import 'package:flutter_store/redux/actions.dart';
 
@@ -12,6 +12,8 @@ AppState appReducer(AppState state, dynamic action) {
 
 User userReducer(User user, dynamic action) {
   if (action is GetUserAction) {
+    return action.user;
+  } else if (action is LogoutUserAction) {
     return action.user;
   }
   return user;

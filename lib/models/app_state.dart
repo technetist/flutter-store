@@ -1,4 +1,4 @@
-import 'package:flutter_store/Models/user.dart';
+import 'package:flutter_store/models/user.dart';
 import 'package:flutter_store/models/product.dart';
 import 'package:meta/meta.dart';
 

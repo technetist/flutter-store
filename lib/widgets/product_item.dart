@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_store/Models/app_state.dart';
+import 'package:flutter_store/models/app_state.dart';
 import 'package:flutter_store/models/product.dart';
 import 'package:flutter_store/pages/product_detail_page.dart';
 
