@@ -34,7 +34,7 @@ ThunkAction<AppState> getProductsAction = (Store<AppState> store) async {
 
   responseData.forEach((productData) {
     final Product product = Product.fromJson(productData);
-      products.add(product);
+    products.add(product);
   });
 
   store.dispatch(GetProductsAction(products));
@@ -62,4 +62,31 @@ class LogoutUserAction {
   dynamic get user => this._user;
 
   LogoutUserAction(this._user);
+}
+
+ThunkAction<AppState> toggleCartProductAction(Product cartProduct) {
+  return (Store<AppState> store) {
+    final List<Product> cartProducts = store.state.cartProducts;
+    final int index =
+        cartProducts.indexWhere((product) => product.id == cartProduct.id);
+    bool isInCart = index > -1 == true;
+
+    List<Product> updatedCartProducts = List.from(cartProducts);
+
+    if(isInCart) {
+      updatedCartProducts.removeAt(index);
+    } else {
+      updatedCartProducts.add(cartProduct);
+    }
+
+    store.dispatch(ToggleCartProductAction(updatedCartProducts));
+  };
+}
+
+class ToggleCartProductAction {
+  final List<Product> _cartProducts;
+
+  List<Product> get cartProducts => this._cartProducts;
+
+  ToggleCartProductAction(this._cartProducts);
 }

@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_store/models/app_state.dart';
 import 'package:flutter_store/models/product.dart';
 import 'package:flutter_store/pages/product_detail_page.dart';
+import 'package:flutter_store/redux/actions.dart';
 
 class ProductItem extends StatelessWidget {
   final Product item;
@@ -13,13 +14,10 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final String pictureUrl = 'http://localhost:1337/${item.picture['url']}';
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return ProductDetailPage(item: item);
-          }
-        )
-      ),
+      onTap: () =>
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return ProductDetailPage(item: item);
+      })),
       child: GridTile(
         child: Hero(
           tag: item,
@@ -48,7 +46,10 @@ class ProductItem extends StatelessWidget {
                     ? IconButton(
                         icon: Icon(Icons.shopping_cart),
                         color: Colors.white,
-                        onPressed: () => print('clicked'),
+                        onPressed: () {
+                          StoreProvider.of<AppState>(context)
+                              .dispatch(toggleCartProductAction(item));
+                        },
                       )
                     : Text('');
               }),
