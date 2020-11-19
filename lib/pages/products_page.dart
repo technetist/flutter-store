@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_store/models/app_state.dart';
@@ -12,19 +13,19 @@ final gradientBackground = BoxDecoration(
         begin: Alignment.bottomLeft,
         end: Alignment.topRight,
         stops: [
-          0.1,
-          0.3,
-          0.5,
-          0.7,
-          0.9
-        ],
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
         colors: [
-          Colors.deepOrange[300],
-          Colors.deepOrange[400],
-          Colors.deepOrange[500],
-          Colors.deepOrange[600],
-          Colors.deepOrange[700],
-        ]));
+      Colors.deepOrange[300],
+      Colors.deepOrange[400],
+      Colors.deepOrange[500],
+      Colors.deepOrange[600],
+      Colors.deepOrange[700],
+    ]));
 
 class ProductsPage extends StatefulWidget {
   final void Function() onInit;
@@ -60,9 +61,19 @@ class ProductsPageState extends State<ProductsPage> {
                             Navigator.pushNamed(context, '/register'),
                       )),
             leading: state.user != null
-                ? IconButton(
-                    icon: Icon(Icons.store),
-                    onPressed: () => Navigator.pushNamed(context, '/cart'),
+                ? Badge(
+                    badgeContent: Text(
+                      state.cartProducts.length.toString(),
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    animationType: BadgeAnimationType.scale,
+                    showBadge: state.cartProducts.length > 0,
+                    position: BadgePosition.topEnd(top: 0, end: 5),
+                    badgeColor: Colors.lime,
+                    child: IconButton(
+                      icon: Icon(Icons.store),
+                      onPressed: () => Navigator.pushNamed(context, '/cart'),
+                    ),
                   )
                 : Text(''),
             actions: [
