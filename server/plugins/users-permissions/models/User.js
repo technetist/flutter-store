@@ -1,5 +1,6 @@
 'use strict';
 
+require('dotenv').config()
 const axios = require('axios');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 
@@ -36,7 +37,7 @@ module.exports = {
    beforeCreate: async (model) => {
     const cart = await axios.post('http://localhost:1337/carts');
     model.set('cart_id', cart.data.id);
-    customer = await stripe.customers.create({
+    const customer = await stripe.customers.create({
       email: model.get('email')
     });
 
