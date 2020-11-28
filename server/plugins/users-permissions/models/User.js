@@ -1,6 +1,7 @@
 'use strict';
 
 const axios = require('axios');
+require('stripe')('');
 
 /**
  * Lifecycle callbacks for the `User` model.
@@ -35,6 +36,7 @@ module.exports = {
    beforeCreate: async (model) => {
     const cart = await axios.post('http://localhost:1337/carts');
     model.set('cart_id', cart.data.id);
+
    },
 
   // After creating a value.
