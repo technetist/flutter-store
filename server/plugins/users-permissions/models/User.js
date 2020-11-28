@@ -36,7 +36,7 @@ module.exports = {
    beforeCreate: async (model) => {
     const cart = await axios.post('http://localhost:1337/carts');
     model.set('cart_id', cart.data.id);
-    await customer = stripe.customers.create({
+    customer = await stripe.customers.create({
       email: model.get('email')
     });
 
