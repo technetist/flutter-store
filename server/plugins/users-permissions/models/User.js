@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config()
+require('dotenv').config();
 const axios = require('axios');
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 
