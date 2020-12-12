@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_store/models/app_state.dart';
+import 'package:flutter_store/models/order.dart';
 import 'package:flutter_store/models/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -116,6 +117,14 @@ ThunkAction<AppState> getCartProductsAction = (Store<AppState> store) async {
   store.dispatch(GetCartProductsAction(cartProducts));
 };
 
+ThunkAction<AppState> clearCartProductsAction = (Store<AppState> store) async {
+  final User user = store.state.user;
+  await http.put('http://localhost:1337/carts/${user.cartId}',
+      body: {"products": json.encode([])},
+      headers: {"Authorization": "Bearer ${user.jwt}"});
+  store.dispatch(ClearCartProductsAction(List(0)));
+};
+
 class ToggleCartProductAction {
   final List<Product> _cartProducts;
 
@@ -132,11 +141,20 @@ class GetCartProductsAction {
   GetCartProductsAction(this._cartProducts);
 }
 
+class ClearCartProductsAction {
+  final List<Product> _cartProducts;
+
+  List<Product> get cartProducts => this._cartProducts;
+
+  ClearCartProductsAction(this._cartProducts);
+}
+
 /* Cards Actions */
 
 ThunkAction<AppState> getCardsAction = (Store<AppState> store) async {
   final String customerId = store.state.user.customerId;
-  http.Response  response = await http.get('http://localhost:1337/card?$customerId');
+  http.Response response =
+      await http.get('http://localhost:1337/card?$customerId');
 
   final responseData = jsonDecode(response.body);
 
@@ -145,22 +163,25 @@ ThunkAction<AppState> getCardsAction = (Store<AppState> store) async {
 
 class GetCardsAction {
   final List<dynamic> _cards;
+
   List<dynamic> get cards => this._cards;
+
   GetCardsAction(this._cards);
 }
 
 class AddCardAction {
   final dynamic _card;
+
   dynamic get card => this._card;
+
   AddCardAction(this._card);
 }
 
 /* Card Token Actions */
 ThunkAction<AppState> getCardTokenAction = (Store<AppState> store) async {
   final String jwt = store.state.user.jwt;
-  http.Response  response = await http.get('http://localhost:1337/users/me', headers: {
-    'Authorization': 'Bearer $jwt'
-  });
+  http.Response response = await http.get('http://localhost:1337/users/me',
+      headers: {'Authorization': 'Bearer $jwt'});
 
   final responseData = jsonDecode(response.body);
   final String cardToken = responseData['card_token'];
@@ -170,12 +191,25 @@ ThunkAction<AppState> getCardTokenAction = (Store<AppState> store) async {
 
 class GetCardTokenAction {
   final String _cardToken;
+
   String get cardToken => this._cardToken;
+
   GetCardTokenAction(this._cardToken);
 }
 
 class UpdateCardTokenAction {
   final String _cardToken;
+
   String get cardToken => this._cardToken;
+
   UpdateCardTokenAction(this._cardToken);
+}
+
+/* Orders Actions */
+class AddOrderAction {
+  final Order _order;
+
+  Order get order => this._order;
+
+  AddOrderAction(this._order);
 }
