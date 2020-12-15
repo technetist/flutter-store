@@ -61,7 +61,9 @@ String cardTokenReducer(String cardToken, action) {
 }
 
 List<Order> ordersReducer(List<Order> orders, dynamic action) {
-  if(action is AddOrderAction) {
+  if (action is GetOrdersAction) {
+    return action.orders;
+  } else if (action is AddOrderAction) {
     return List.from(orders)..add(action.order);
   }
   return orders;

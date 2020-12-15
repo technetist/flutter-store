@@ -5,6 +5,7 @@ import 'package:flutter_store/models/order.dart';
 import 'package:flutter_store/models/user.dart';
 import 'package:flutter_store/redux/actions.dart';
 import 'package:flutter_store/widgets/product_item.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:http/http.dart' as http;
@@ -161,7 +162,7 @@ class CartPageState extends State<CartPage> {
               .map<Widget>(
                 (order) => (ListTile(
                   title: Text('\$${order.amount}'),
-                  subtitle: Text(order.createdAt),
+                  subtitle: Text(DateFormat('MMM dd, yyyy - hh:mm').format(order.createdAt)),
                   leading: CircleAvatar(
                     backgroundColor: Colors.green,
                     child: Icon(
